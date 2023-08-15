@@ -1,0 +1,81 @@
+DROP DATABASE IF EXISTS craigslist;
+CREATE DATABASE craigslist;
+\c craigslist
+
+CREATE TABLE regions (
+    id SERIAL NOT NULL PRIMARY KEY, 
+    name text NOT NULL
+);
+
+INSERT INTO regions (name) VALUES ('New York City');
+INSERT INTO regions (name) VALUES ('Albany');
+INSERT INTO regions (name) VALUES ('Syracuse');
+INSERT INTO regions (name) VALUES ('Buffalo');
+INSERT INTO regions (name) VALUES ('Long Island');
+INSERT INTO regions (name) VALUES ('Adirondacks');
+
+CREATE TABLE users (
+    id SERIAL NOT NULL PRIMARY KEY, 
+    user_region INT NOT NULL REFERENCES regions,
+    email_address text NOT NULL UNIQUE
+);
+
+INSERT INTO users (user_region, email_address) VALUES (1, 'john_doe@yahoo.com');
+INSERT INTO users (user_region, email_address) VALUES (2, 'jane_doe@expedia.com');
+INSERT INTO users (user_region, email_address) VALUES (3, 'jim_smith@gmail.com');
+INSERT INTO users (user_region, email_address) VALUES (4, 'smiley@yahoo.com');
+INSERT INTO users (user_region, email_address) VALUES (5, 'james_brant@yahoo.com');
+INSERT INTO users (user_region, email_address) VALUES (6, 'judy_doe@go.com');
+
+CREATE TABLE categories (
+    id SERIAL NOT NULL PRIMARY KEY, 
+    name text NOT NULL
+);
+
+INSERT INTO categories (name) VALUES ('Apartments');
+INSERT INTO categories (name) VALUES ('Cars');
+INSERT INTO categories (name) VALUES ('Pets');
+INSERT INTO categories (name) VALUES ('Clothes');
+INSERT INTO categories (name) VALUES ('Furniture');
+
+CREATE TABLE posts (
+    id SERIAL NOT NULL PRIMARY KEY, 
+    user_id INT NOT NULL REFERENCES users,
+    category_id INT NOT NULL REFERENCES categories,
+    region_id INT NOT NULL REFERENCES regions, 
+    location text NOT NULL, 
+    price INT NOT NULL, 
+    post_content text NOT NULL
+);
+
+
+INSERT INTO posts (user_id, category_id, region_id, location, price, post_content)
+    VALUES (
+        '3',
+        '2',
+        '2', 
+        'Troy',
+        '1325',
+        'Vintage Dodge Caravan, needs TLC.'
+    );
+
+INSERT INTO posts (user_id, category_id, region_id, location, price, post_content)
+    VALUES (
+        '1',
+        '1',
+        '1', 
+        'Central Park',
+        '3500',
+        'Next to central park, 3rd floor 1 bedroom, utilities included.'
+
+    );
+
+INSERT INTO posts (user_id, category_id, region_id, location, price, post_content)
+    VALUES (
+        '4',
+        '3',
+        '4', 
+        'Grand Island',
+        '30',
+        'Cans of food my cat will not eat, 30$ obo.'
+    );
